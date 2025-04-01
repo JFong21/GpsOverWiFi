@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,12 +25,26 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
 
+    // UI Components
+    private TextView statusIndicator;
+    private Button standbyButton, followButton;
+    private boolean isConnected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Initialize UI components
+        statusIndicator = findViewById(R.id.statusIndicator);
+        standbyButton = findViewById(R.id.standbyButton);
+        followButton = findViewById(R.id.followButton);
+
+        standbyButton.setOnClickListener(v -> NetworkUtils.sendCommand("standby"));
+        followButton.setOnClickListener(v -> NetworkUtils.sendCommand("follow"));
+
 
         // Check for permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -76,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("GPS", "Lat: " + latitude + ", Long: " + longitude);
 
                     // send GPS data to server
-                    NetworkUtils.sendLocation(latitude, longitude);
+                    NetworkUtils.sendLocation(latitude, longitude, statusIndicator);
                 }
             }
         };
