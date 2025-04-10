@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 public class NetworkUtils {
     // need to set this to target IP
-    private static final String SERVER_URL = "http://192.168.86.41:5000/location";
-    private static final String COMMAND_URL = "http://192.168.86.41:5000/command";
+    private static final String SERVER_URL = "http://192.168.00.00:5000/location";
+    private static final String COMMAND_URL = "http://192.168.00.00:5000/command";
 
 
     // Send Data to Flask with HTTP POST

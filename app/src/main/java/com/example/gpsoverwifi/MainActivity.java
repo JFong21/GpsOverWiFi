@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    private WebView videoWebView;
+
 
     // UI Components
     private TextView statusIndicator;
@@ -41,9 +45,15 @@ public class MainActivity extends AppCompatActivity {
         statusIndicator = findViewById(R.id.statusIndicator);
         standbyButton = findViewById(R.id.standbyButton);
         followButton = findViewById(R.id.followButton);
+        videoWebView = findViewById(R.id.videoStream);
 
         standbyButton.setOnClickListener(v -> NetworkUtils.sendCommand("standby"));
         followButton.setOnClickListener(v -> NetworkUtils.sendCommand("follow"));
+
+        // Set up WebView to display the MJPEG stream
+        videoWebView.getSettings().setJavaScriptEnabled(true);
+        videoWebView.setWebViewClient(new WebViewClient());
+        videoWebView.loadUrl("http://<raspberry-pi-ip>"); // Replace with Pi IP
 
 
         // Check for permission
